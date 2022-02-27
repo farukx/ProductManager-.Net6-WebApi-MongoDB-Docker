@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  productmanager:
+    image: ${DOCKER_REGISTRY-}productmanager
+    build:
+      context: .
+      dockerfile: ProductManager/Dockerfile
+    ports:
+        - 8082:80
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        - ASPNETCORE_URLS=http://+:80
+        - ASPNETCORE_Kestrel__Certificates__Default__Password=123456
+        - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+    volumes:
+        - ~/.aspnet/https:/https:ro
+    restart: always
+mongo:
+    image: mongo
+    restart: always
+    ports:
+        - 27017:27017
